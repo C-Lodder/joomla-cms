@@ -24,22 +24,8 @@ jobs:
 
     - name: Install dependencies
       run: composer install --no-progress --no-suggest
-    
-    - name: phpcs
-      run: |
-        php -m
-        php -r "echo $(date)"
-        php -r "if(! extension_loaded('Xdebug')) {throw new Exception('Xdebug not found');}"
-        php -r "echo $(date)"
           
     - name: phpcs
       uses: chekalsky/phpcs-action@v1
       with:
         phpcs_bin_path: "${{ github.workspace }}/libraries/vendor/bin/phpcs"
-        
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
