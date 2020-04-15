@@ -29,3 +29,4 @@ jobs:
       uses: chekalsky/phpcs-action@v1
       with:
         phpcs_bin_path: "${{ github.workspace }}/libraries/vendor/bin/phpcs"
+        installed_paths: "${{ github.workspace }}/libraries/vendor/joomla/cms-coding-standards/lib/Joomla-CMS"
