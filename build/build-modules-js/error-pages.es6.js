@@ -13,7 +13,7 @@ const RootPath = process.cwd();
 const dir = `${RootPath}/installation/language`;
 const srcPath = `${RootPath}/build/warning_page`;
 
-/* global globalThis */
+const obj = {};
 
 /**
  * Will produce 4 .html files
@@ -28,10 +28,10 @@ const srcPath = `${RootPath}/build/warning_page`;
 module.exports.createErrorPages = async (options) => {
   const iniFilesProcess = [];
   const processPages = [];
-  globalThis.incompleteObj = {};
-  globalThis.unsupportedObj = {};
-  globalThis.fatalObj = {};
-  globalThis.noxmlObj = {};
+  obj.incompleteObj = {};
+  obj.unsupportedObj = {};
+  obj.fatalObj = {};
+  obj.noxmlObj = {};
 
   const initTemplate = await readFile(`${srcPath}/template.html`, { encoding: 'utf8' });
   let cssContent = await readFile(`${srcPath}/template.css`, { encoding: 'utf8' });
@@ -48,8 +48,8 @@ module.exports.createErrorPages = async (options) => {
     // Build the variables into json for the unsupported page
     if (languageStrings.MIN_PHP_ERROR_LANGUAGE) {
       const name = dirname(file).replace(/.+\//, '').replace(/.+\\/, '');
-      globalThis.unsupportedObj = {
-        ...globalThis.unsupportedObj,
+      obj.unsupportedObj = {
+        ...obj.unsupportedObj,
         [name]: {
           language: languageStrings.MIN_PHP_ERROR_LANGUAGE,
           header: languageStrings.MIN_PHP_ERROR_HEADER,
@@ -62,8 +62,8 @@ module.exports.createErrorPages = async (options) => {
     // Build the variables into json for the build incomplete page
     if (languageStrings.BUILD_INCOMPLETE_LANGUAGE) {
       const name = dirname(file).replace(/.+\//, '').replace(/.+\\/, '');
-      globalThis.incompleteObj = {
-        ...globalThis.incompleteObj,
+      obj.incompleteObj = {
+        ...obj.incompleteObj,
         [name]: {
           language: languageStrings.BUILD_INCOMPLETE_LANGUAGE,
           header: languageStrings.BUILD_INCOMPLETE_HEADER,
@@ -76,8 +76,8 @@ module.exports.createErrorPages = async (options) => {
     // Build the variables into json for the fatal error page
     if (languageStrings.BUILD_FATAL_LANGUAGE) {
       const name = dirname(file).replace(/.+\//, '').replace(/.+\\/, '');
-      globalThis.fatalObj = {
-        ...globalThis.fatalObj,
+      obj.fatalObj = {
+        ...obj.fatalObj,
         [name]: {
           language: languageStrings.BUILD_FATAL_LANGUAGE,
           header: languageStrings.BUILD_FATAL_HEADER,
@@ -90,8 +90,8 @@ module.exports.createErrorPages = async (options) => {
     // Build the variables into json for the missing XML error page
     if (languageStrings.BUILD_NOXML_LANGUAGE) {
       const name = dirname(file).replace(/.+\//, '').replace(/.+\\/, '');
-      globalThis.noxmlObj = {
-        ...globalThis.noxmlObj,
+      obj.noxmlObj = {
+        ...obj.noxmlObj,
         [name]: {
           language: languageStrings.BUILD_NOXML_LANGUAGE,
           header: languageStrings.BUILD_NOXML_HEADER,
@@ -114,7 +114,7 @@ module.exports.createErrorPages = async (options) => {
   });
 
   const processPage = async (name) => {
-    const jsonContent = `window.errorLocale=${JSON.stringify(globalThis[`${name}Obj`])};`;
+    const jsonContent = `window.errorLocale=${JSON.stringify(obj[`${name}Obj`])};`;
 
     let template = initTemplate;
 
