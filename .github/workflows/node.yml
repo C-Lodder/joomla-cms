@@ -17,6 +17,12 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v2
 
+      - name: Composer
+        uses: php-actions/composer@v5
+        with:
+          php_version: 7.4
+          command: composer install
+
       - name: Set Node.js version
         uses: actions/setup-node@v1
         with:
