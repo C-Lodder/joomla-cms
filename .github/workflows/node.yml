@@ -17,17 +17,27 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v2
 
-      - name: Composer
-        uses: php-actions/composer@v5
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
         with:
-          php_version: 7.4
-          command: composer install
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
 
       - name: Set Node.js version
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
 
+      - name: Composer
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install
+ 
       - run: node --version
       - run: npm --version
 
