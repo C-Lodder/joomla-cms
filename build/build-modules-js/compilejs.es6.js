@@ -53,7 +53,7 @@ module.exports.scripts = async (options, path) => {
   }
 
   const computedFiles = await Promise.all(folderPromises);
-  const computedFilesFlat = computedFiles.flat();
+  const computedFilesFlat = computedFiles.reduce((acc, val) => acc.concat(val), []);
 
   const jsFilesPromises = [];
   const wcFilesPromises = [];
